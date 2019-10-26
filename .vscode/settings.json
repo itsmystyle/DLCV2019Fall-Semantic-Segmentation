@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "/home/ywuanchai/.pyenv/versions/p36/bin/python"
+    "python.pythonPath": "/home/ywuanchai/.pyenv/versions/p36/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
 }
