@@ -63,7 +63,7 @@ class SegData(Dataset):
 
             return (
                 self.transform(img),
-                torch.from_numpy(np.array(seg, np.int32, copy=False)),
+                torch.from_numpy(np.array(seg, np.int32, copy=False)).long(),
             )
 
 
