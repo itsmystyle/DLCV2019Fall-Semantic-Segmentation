@@ -14,19 +14,23 @@ STD = [0.5, 0.5, 0.5]
 
 
 class SegData(Dataset):
-    def __init__(self, data_dir):
+    def __init__(self, data_dir, mode="test"):
 
         """ set up basic parameters for dataset """
+        self.mode = mode
         self.data_dir = data_dir
         self.img_dir = os.path.join(self.data_dir, "img")
         self.seg_dir = os.path.join(self.data_dir, "seg")
 
         """ read the data list """
-        imgs_path = glob.glob(os.path.join(self.img_dir, "*.png"))
-        segs_path = glob.glob(os.path.join(self.seg_dir, "*.png"))
+        imgs_path = sorted(glob.glob(os.path.join(self.img_dir, "*.png")))
+        segs_path = sorted(glob.glob(os.path.join(self.seg_dir, "*.png")))
 
         """ set up image path """
-        self.data = [p for p in zip(imgs_path, segs_path)]
+        if self.mode == "test":
+            self.data = imgs_path
+        else:
+            self.data = [p for p in zip(imgs_path, segs_path)]
 
         """ set up image trainsform """
         self.transform = transforms.Compose(
@@ -41,17 +45,26 @@ class SegData(Dataset):
 
     def __getitem__(self, idx):
 
-        """ get data """
-        img_path, seg_path = self.data[idx]
+        if self.mode == "test":
+            """ get data """
+            img_path = self.data[idx]
 
-        """ read image/seg and convert to tensor"""
-        img = Image.open(img_path).convert("RGB")
-        seg = Image.open(seg_path)
+            """ read image and convert to tensor"""
+            img = Image.open(img_path).convert("RGB")
 
-        return (
-            self.transform(img),
-            torch.from_numpy(np.array(seg, np.int32, copy=False)),
-        )
+            return self.transform(img)
+        else:
+            """ get data """
+            img_path, seg_path = self.data[idx]
+
+            """ read image/seg and convert to tensor"""
+            img = Image.open(img_path).convert("RGB")
+            seg = Image.open(seg_path)
+
+            return (
+                self.transform(img),
+                torch.from_numpy(np.array(seg, np.int32, copy=False)),
+            )
 
 
 if __name__ == "__main__":
