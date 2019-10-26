@@ -2,7 +2,13 @@
 # IMPORTANT: make sure that your dataset is stored in a
 # folder with the same name as the one specified below!
 
+# dataset
 hw2_data
 *.png
+
+# model
 *.tar
 models
+
+# caches
+*__pycache__*
