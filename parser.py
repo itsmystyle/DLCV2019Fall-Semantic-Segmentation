@@ -25,6 +25,7 @@ def arg_parse():
 
     # Models parameters
     parser.add_argument("--save_dir", type=str, default="models")
+    parser.add_argument("--pretrained", dest="pretrained", action="store_true")
 
     # Training parameters
     parser.add_argument(
