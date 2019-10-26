@@ -14,10 +14,10 @@ STD = [0.5, 0.5, 0.5]
 
 
 class SegData(Dataset):
-    def __init__(self, args):
+    def __init__(self, data_dir):
 
         """ set up basic parameters for dataset """
-        self.data_dir = args.data_dir
+        self.data_dir = data_dir
         self.img_dir = os.path.join(self.data_dir, "img")
         self.seg_dir = os.path.join(self.data_dir, "seg")
 
@@ -64,10 +64,10 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    seg_data = SegData(args)
+    seg_data = SegData(args.data_dir)
 
     from torch.utils.data import DataLoader
 
-    dataloader = DataLoader(seg_data, batch_size=10, shuffle=False, num_workers=0)
+    dataloader = DataLoader(seg_data, batch_size=32, shuffle=False, num_workers=4)
     for batch in dataloader:
-        pass
+        break
