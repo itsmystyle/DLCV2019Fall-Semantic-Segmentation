@@ -11,6 +11,11 @@ class BaselineNet(nn.Module):
         backbone = models.resnet18(pretrained=args.pretrained)
         self.backbone = nn.Sequential(*(list(backbone.children())[:-2]))
 
+        # Freeze backbone
+        # for child in self.backbone.children():
+        #     for param in child.parameters():
+        #         param.requires_grad = False
+
         """ De-convolution layers"""
         # first block
         self.deconv1 = nn.ConvTranspose2d(
