@@ -32,18 +32,13 @@ def arg_parse():
         "--gpu", default=0, type=int, help="gpu device ids for CUDA_VISIBLE_DEVICES"
     )
     parser.add_argument(
-        "--epoch", default=100, type=int, help="num of validation iterations"
-    )
-    parser.add_argument(
-        "--val_epoch", default=1, type=int, help="num of validation iterations"
+        "--epochs", default=100, type=int, help="num of validation iterations"
     )
     parser.add_argument("--train_batch", default=32, type=int, help="train batch size")
     parser.add_argument("--test_batch", default=32, type=int, help="test batch size")
+    parser.add_argument("--lr", default=1e-3, type=float, help="initial learning rate")
     parser.add_argument(
-        "--lr", default=0.0002, type=float, help="initial learning rate"
-    )
-    parser.add_argument(
-        "--weight-decay", default=0.0005, type=float, help="initial learning rate"
+        "--weight-decay", default=1e-5, type=float, help="initial weight decay rate"
     )
 
     # resume trained model
