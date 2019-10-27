@@ -36,9 +36,9 @@ def arg_parse():
     )
     parser.add_argument("--train_batch", default=32, type=int, help="train batch size")
     parser.add_argument("--test_batch", default=32, type=int, help="test batch size")
-    parser.add_argument("--lr", default=1e-3, type=float, help="initial learning rate")
+    parser.add_argument("--lr", default=2e-4, type=float, help="initial learning rate")
     parser.add_argument(
-        "--weight-decay", default=1e-5, type=float, help="initial weight decay rate"
+        "--weight-decay", default=1e-6, type=float, help="initial weight decay rate"
     )
 
     # resume trained model
@@ -47,7 +47,7 @@ def arg_parse():
     )
 
     # others
-    parser.add_argument("--random_seed", type=int, default=42)
+    parser.add_argument("--random_seed", type=int, default=0)
 
     args = parser.parse_args()
 
