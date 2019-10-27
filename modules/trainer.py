@@ -2,7 +2,10 @@ import os
 
 import torch
 import torch.nn.functional as F
+import numpy as np
 from tqdm import tqdm
+
+from mean_iou_evaluate import mean_iou_score
 
 
 class Trainer:
@@ -122,6 +125,9 @@ class Trainer:
         self.metric.reset()
         batch_loss = 0.0
 
+        _preds_tmp = []
+        _segs_tmp = []
+
         """ evaluate the model """
         with torch.no_grad():
             for idx, (imgs, segs) in enumerate(self.val_loader):
@@ -139,16 +145,21 @@ class Trainer:
                 """ update metric """
                 preds = F.softmax(preds, dim=1)
                 preds = preds.max(dim=1)[1]
-                self.metric.update(preds.cpu().numpy(), segs.cpu().numpy())
+                # self.metric.update(preds.cpu().numpy(), segs.cpu().numpy())
+                _preds_tmp.append(preds.cpu().numpy())
+                _segs_tmp.append(segs.cpu().numpy())
 
                 """ update loss """
                 batch_loss += loss.item()
 
                 """ write out information to tensorboard """
                 self.writer.add_scalar("val_loss", loss.data.cpu().numpy(), iters)
-                self.writer.add_scalar("val_iou", self.metric.get_score(), iters)
+                # self.writer.add_scalar("val_iou", self.metric.get_score(), iters)
 
-            val_iou = self.metric.get_score()
+            # val_iou = self.metric.get_score()
+            xx = np.concatenate(_preds_tmp)
+            yy = np.concatenate(_segs_tmp)
+            val_iou = mean_iou_score(xx, yy)
 
             """ save best model """
             if val_iou > best_iou:
