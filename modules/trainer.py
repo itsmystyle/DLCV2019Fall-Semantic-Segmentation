@@ -10,7 +10,15 @@ from mean_iou_evaluate import mean_iou_score
 
 class Trainer:
     def __init__(
-        self, model, optimizer, criterion, train_loader, val_loader, writer, metric, save_dir
+        self,
+        model,
+        optimizer,
+        criterion,
+        train_loader,
+        val_loader,
+        writer,
+        metric,
+        save_dir,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -95,7 +103,8 @@ class Trainer:
 
             """ print loss and metrics """
             trange.set_postfix(
-                loss=batch_loss / (idx + 1), **{self.metric.name: self.metric.print_score()}
+                loss=batch_loss / (idx + 1),
+                **{self.metric.name: self.metric.print_score()}
             )
 
         return batch_loss / (idx + 1), self.metric.get_score(), iters
@@ -116,8 +125,8 @@ class Trainer:
         self.metric.reset()
         batch_loss = 0.0
 
-        _preds_tmp = []
-        _segs_tmp = []
+        val_preds = []
+        val_segs = []
 
         """ evaluate the model """
         with torch.no_grad():
@@ -136,21 +145,18 @@ class Trainer:
                 """ update metric """
                 preds = F.softmax(preds, dim=1)
                 preds = preds.max(dim=1)[1]
-                # self.metric.update(preds.cpu().numpy(), segs.cpu().numpy())
-                _preds_tmp.append(preds.cpu().numpy())
-                _segs_tmp.append(segs.cpu().numpy())
+                val_preds.append(preds.cpu().numpy())
+                val_segs.append(segs.cpu().numpy())
 
                 """ update loss """
                 batch_loss += loss.item()
 
                 """ write out information to tensorboard """
                 self.writer.add_scalar("val_loss", loss.data.cpu().numpy(), iters)
-                # self.writer.add_scalar("val_iou", self.metric.get_score(), iters)
 
-            # val_iou = self.metric.get_score()
-            xx = np.concatenate(_preds_tmp)
-            yy = np.concatenate(_segs_tmp)
-            val_iou = mean_iou_score(xx, yy)
+            val_preds = np.concatenate(val_preds)
+            val_segs = np.concatenate(val_segs)
+            val_iou = mean_iou_score(val_preds, val_segs)
 
             """ save best model """
             if val_iou > best_iou:
