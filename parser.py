@@ -26,6 +26,9 @@ def arg_parse():
     # Models parameters
     parser.add_argument("--save_dir", type=str, default="models")
     parser.add_argument("--pretrained", dest="pretrained", action="store_true")
+    parser.add_argument(
+        "--resume", type=str, default="", help="path to the trained model"
+    )
 
     # Training parameters
     parser.add_argument(
@@ -39,11 +42,6 @@ def arg_parse():
     parser.add_argument("--lr", default=2e-4, type=float, help="initial learning rate")
     parser.add_argument(
         "--weight-decay", default=1e-6, type=float, help="initial weight decay rate"
-    )
-
-    # resume trained model
-    parser.add_argument(
-        "--resume", type=str, default="", help="path to the trained model"
     )
 
     # others
