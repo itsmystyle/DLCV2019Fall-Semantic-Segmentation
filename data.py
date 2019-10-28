@@ -22,7 +22,7 @@ class SegData(Dataset):
         """ set up data """
         if self.mode == "test":
             """ read the data list """
-            imgs_path = glob.glob(self.data_dir, "*.png")
+            imgs_path = glob.glob(os.path.join(self.data_dir, "*.png"))
             imgs_path.sort()
 
             self.data = imgs_path
@@ -57,8 +57,8 @@ class SegData(Dataset):
             """ read image and convert to tensor"""
             img = Image.open(img_path).convert("RGB")
 
-            """ TODO: Split path into filename only """
-            return self.transform(img), img_path
+            return self.transform(img), img_path.split("/")[-1]
+
         else:
             """ get data """
             img_path, seg_path = self.data[idx]
@@ -87,8 +87,4 @@ if __name__ == "__main__":
 
     dataloader = DataLoader(seg_data, batch_size=32, shuffle=False, num_workers=0)
     for batch in dataloader:
-        """ TODO: Unit-test on test mode """
-        import ipdb
-
-        ipdb.set_trace()
         break
