@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     args = parser.arg_parse()
 
-    """create directory to save trained model and other info"""
+    """ create directory to save trained model and other info """
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
 
