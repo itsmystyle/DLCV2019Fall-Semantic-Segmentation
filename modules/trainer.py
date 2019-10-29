@@ -90,13 +90,15 @@ class Trainer:
             batch_loss += loss.item()
 
             """ write out information to tensorboard """
-            self.writer.add_scalar("train_loss", loss.data.cpu().item(), iters)
-            self.writer.add_scalar("train_iou", self.metric.get_score(), iters)
+            self.writer.add_scalar("loss/train_loss", loss.data.cpu().item(), iters)
 
             """ print loss and metrics """
             trange.set_postfix(
                 loss=batch_loss / (idx + 1), **{self.metric.name: self.metric.print_score()}
             )
+
+        """ write out mean IoU to tensorboard """
+        self.writer.add_scalar("mIoU/train_iou", self.metric.get_score(), epoch)
 
         return batch_loss / (idx + 1), self.metric.get_score(), iters
 
@@ -143,11 +145,12 @@ class Trainer:
                 batch_loss += loss.item()
 
                 """ write out information to tensorboard """
-                self.writer.add_scalar("val_loss", loss.data.cpu().numpy(), iters)
+                self.writer.add_scalar("loss/val_loss", loss.data.cpu().numpy(), iters)
 
             val_preds = np.concatenate(val_preds)
             val_segs = np.concatenate(val_segs)
             val_iou = mean_iou_score(val_preds, val_segs)
+            self.writer.add_scalar("mIoU/val_miou", val_iou, epoch)
 
             """ save best model """
             if val_iou > best_iou:
