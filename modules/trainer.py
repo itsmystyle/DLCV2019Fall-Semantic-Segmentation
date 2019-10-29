@@ -98,7 +98,7 @@ class Trainer:
             )
 
         """ write out mean IoU to tensorboard """
-        self.writer.add_scalar("mIoU/train_iou", self.metric.get_score(), epoch)
+        self.writer.add_scalar("mIoU/train_miou", self.metric.get_score(), epoch)
 
         return batch_loss / (idx + 1), self.metric.get_score(), iters
 
