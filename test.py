@@ -9,6 +9,7 @@ from scipy.misc import toimage
 import data
 import parser
 from modules.baseline_model import BaselineNet
+from modules.unet_model import UNet
 
 
 if __name__ == "__main__":
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     """ TODO: use the save function to prepare model in train/test.py """
     """ load model """
     print("===> prepare model ...")
-    model = BaselineNet(args)
+    model = UNet(args)
     model.cuda()
 
     """ resume save model """
