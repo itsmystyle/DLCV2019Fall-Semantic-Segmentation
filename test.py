@@ -54,6 +54,8 @@ if __name__ == "__main__":
     checkpoint = torch.load(args.resume)
     model.load_state_dict(checkpoint)
 
+    model.eval()
+
     """ inference image segmentation """
     print("===> inferencing ...")
     predicts = []
