@@ -111,5 +111,6 @@ If you have any problems related to HW2, you may
 ### How to test
 
 ``` bash
+  python test.py --resume <model_path/model.pth.tar> --data_dir <input_dir> --output_dir <output_dir>
 ```
 
