@@ -1,13 +1,16 @@
 import os
 import glob
+import random
 
 import torch
 import argparse
 import scipy.misc
+import numpy as np
 import torchvision.transforms as transforms
 from PIL import Image
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
+from torchvision.transforms.functional import hflip
 
 
 MEAN = [0.485, 0.456, 0.406]
@@ -15,9 +18,10 @@ STD = [0.229, 0.224, 0.225]
 
 
 class SegData(Dataset):
-    def __init__(self, data_dir, mode="test"):
+    def __init__(self, data_dir, mode="test", augmentation=False):
         self.mode = mode
         self.data_dir = data_dir
+        self.augmentation = augmentation
 
         """ set up data """
         if self.mode == "test":
@@ -42,7 +46,7 @@ class SegData(Dataset):
 
         """ set up image trainsform """
         self.transform = transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize(MEAN, STD)]
+            [transforms.ToTensor()]  # [transforms.ToTensor(), transforms.Normalize(MEAN, STD)]
         )
 
     def __len__(self):
@@ -67,6 +71,11 @@ class SegData(Dataset):
             img = Image.open(img_path).convert("RGB")
             seg = scipy.misc.imread(seg_path)
 
+            """ data augmentation during training """
+            if self.mode == "train" and self.augmentation and random.randrange(0, 2) == 1:
+                img = hflip(img)
+                seg = np.asarray(hflip(Image.fromarray(seg)))
+
             return (self.transform(img), torch.from_numpy(seg).long())
 
 
@@ -81,10 +90,22 @@ if __name__ == "__main__":
     parser.add_argument(
         "--mode", type=str, default="train", help="Dataloader mode for train/valid/test."
     )
+    parser.add_argument(
+        "--augmentation",
+        dest="augmentation",
+        action="store_true",
+        help="Whether to do data augmentation.",
+    )
     args = parser.parse_args()
 
-    seg_data = SegData(args.data_dir, args.mode)
+    seg_data = SegData(args.data_dir, args.mode, args.augmentation)
 
     dataloader = DataLoader(seg_data, batch_size=32, shuffle=False, num_workers=0)
     for batch in dataloader:
+        import matplotlib.pyplot as plt
+
+        for idx, (img, seg) in enumerate(zip(*batch)):
+            plt.imsave("test{}_img.png".format(idx), img.cpu().detach().numpy().transpose(1, 2, 0))
+            plt.imsave("test{}_seg.png".format(idx), seg.cpu().detach().numpy())
+
         break
