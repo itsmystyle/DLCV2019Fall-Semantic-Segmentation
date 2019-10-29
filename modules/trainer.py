@@ -10,15 +10,7 @@ from mean_iou_evaluate import mean_iou_score
 
 class Trainer:
     def __init__(
-        self,
-        model,
-        optimizer,
-        criterion,
-        train_loader,
-        val_loader,
-        writer,
-        metric,
-        save_dir,
+        self, model, optimizer, criterion, train_loader, val_loader, writer, metric, save_dir
     ):
         self.model = model
         self.optimizer = optimizer
@@ -103,8 +95,7 @@ class Trainer:
 
             """ print loss and metrics """
             trange.set_postfix(
-                loss=batch_loss / (idx + 1),
-                **{self.metric.name: self.metric.print_score()}
+                loss=batch_loss / (idx + 1), **{self.metric.name: self.metric.print_score()}
             )
 
         return batch_loss / (idx + 1), self.metric.get_score(), iters
@@ -142,7 +133,7 @@ class Trainer:
                 """ compute loss """
                 loss = self.criterion(preds, segs)
 
-                """ update metric """
+                """ argmax softmax and append to list """
                 preds = F.softmax(preds, dim=1)
                 preds = preds.max(dim=1)[1]
                 val_preds.append(preds.cpu().numpy())

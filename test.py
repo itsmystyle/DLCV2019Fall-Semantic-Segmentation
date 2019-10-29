@@ -1,4 +1,5 @@
 import os
+import random
 
 import torch
 import numpy as np
@@ -29,6 +30,7 @@ if __name__ == "__main__":
     torch.cuda.set_device(args.gpu)
 
     """ setup random seed """
+    random.seed(args.random_seed)
     np.random.seed(args.random_seed)
     torch.manual_seed(args.random_seed)
     torch.cuda.manual_seed(args.random_seed)
@@ -51,6 +53,8 @@ if __name__ == "__main__":
     """ resume save model """
     checkpoint = torch.load(args.resume)
     model.load_state_dict(checkpoint)
+
+    model.eval()
 
     """ inference image segmentation """
     print("===> inferencing ...")

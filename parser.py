@@ -20,6 +20,12 @@ def arg_parse():
         default=os.path.join("hw2_data"),
         help="root path to output directory",
     )
+    parser.add_argument(
+        "--augmentation",
+        dest="augmentation",
+        action="store_true",
+        help="Whether to do data augmentation.",
+    )
 
     # Models parameters
     parser.add_argument("--save_dir", type=str, default="models")

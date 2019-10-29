@@ -1,4 +1,5 @@
 import os
+import random
 
 import torch
 import numpy as np
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     torch.cuda.set_device(args.gpu)
 
     """ setup random seed """
+    random.seed(args.random_seed)
     np.random.seed(args.random_seed)
     torch.manual_seed(args.random_seed)
     torch.cuda.manual_seed(args.random_seed)
@@ -31,7 +33,7 @@ if __name__ == "__main__":
     """ load dataset and prepare data loader """
     print("===> prepare dataloader ...")
     train_loader = torch.utils.data.DataLoader(
-        data.SegData(os.path.join(args.data_dir, "train"), "train"),
+        data.SegData(os.path.join(args.data_dir, "train"), "train", args.augmentation),
         batch_size=args.train_batch,
         num_workers=args.workers,
         shuffle=True,
@@ -55,22 +57,13 @@ if __name__ == "__main__":
     metric = MeanIOUScore(9)
 
     """ setup optimizer """
-    optimizer = torch.optim.Adam(
-        model.parameters(), lr=args.lr, weight_decay=args.weight_decay
-    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
     """ setup tensorboard """
     writer = SummaryWriter(os.path.join(args.save_dir, "train_info"))
 
     trainer = Trainer(
-        model,
-        optimizer,
-        criterion,
-        train_loader,
-        val_loader,
-        writer,
-        metric,
-        args.save_dir,
+        model, optimizer, criterion, train_loader, val_loader, writer, metric, args.save_dir
     )
 
     trainer.fit(args.epochs)

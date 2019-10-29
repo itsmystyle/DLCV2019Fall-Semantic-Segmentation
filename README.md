@@ -4,7 +4,7 @@ In HW2 problem 1, you will need to implement two semantic segmentation models an
 
 For more details, please click [this link](https://drive.google.com/file/d/1NLhvpKT8LrF-oOuFlz4sSuiX5AmUDw1Y/view?usp=sharing) to view the slides of HW2 and click [this link](https://drive.google.com/file/d/1W29SSyjGmUBmoq0dSW8qbHZ8xpdgLL6j/view?usp=sharing) to view the slides of HW2 problem 1.
 
-# Usage
+## Usage
 
 To start working on this assignment, you should clone this repository into your local machine by using the following command.
 
@@ -29,8 +29,8 @@ To evaluate your model, you can run the provided evaluation script provided in t
 
     python3 mean_iou_evaluate.py <--pred PredictionDir> <--labels GroundTruthDir>
 
- - `<PredictionDir>` should be the directory to your predicted semantic segmentation map (e.g. `hw2_data/prediction/` )
- - `<GroundTruthDir>` should be the directory of ground truth (e.g. `hw2_data/val/seg/` )
+* `<PredictionDir>` should be the directory to your predicted semantic segmentation map (e.g. `hw2_data/prediction/` )
+* `<GroundTruthDir>` should be the directory of ground truth (e.g. `hw2_data/val/seg/` )
 
 Note that your predicted segmentation semantic map file should have the same filename as that of its corresponding ground truth label file (both of extension ` ` .png ` ` ).
 
@@ -99,4 +99,18 @@ If you have any problems related to HW2, you may
     - Thursday  10:00-11:00 @BL-527
 * Contact TAs by e-mail ([ntudlcvta2019@gmail.com](mailto:ntudlcvta2019@gmail.com))
 * Post your question in the comment section of [this post](https://www.facebook.com/notes/dlcv-fall-2019/hw2-qa/2788293221194365/)
+
+## Developer Guide
+
+### How to train
+
+``` bash
+  python train.py --data_dir hw2_data/ --save_dir models/baseline_with_da --pretrained --augmentation
+```
+
+### How to test
+
+``` bash
+  python test.py --resume <model_path/model.pth.tar> --data_dir <input_dir> --output_dir <output_dir>
+```
 
