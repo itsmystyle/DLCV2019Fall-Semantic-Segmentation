@@ -33,7 +33,7 @@ if __name__ == "__main__":
     """ load dataset and prepare data loader """
     print("===> prepare dataloader ...")
     train_loader = torch.utils.data.DataLoader(
-        data.SegData(os.path.join(args.data_dir, "train"), "train"),
+        data.SegData(os.path.join(args.data_dir, "train"), "train", args.augmentation),
         batch_size=args.train_batch,
         num_workers=args.workers,
         shuffle=True,
