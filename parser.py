@@ -28,9 +28,17 @@ def arg_parse():
     )
 
     # Models parameters
-    parser.add_argument("--save_dir", type=str, default="models")
-    parser.add_argument("--pretrained", dest="pretrained", action="store_true")
+    parser.add_argument("--save_dir", type=str, default="models", help="Where to store the model")
+    parser.add_argument(
+        "--pretrained",
+        dest="pretrained",
+        action="store_true",
+        help="Whether to use pretrained weight",
+    )
     parser.add_argument("--resume", type=str, default="", help="path to the trained model")
+    parser.add_argument(
+        "--baseline", dest="baseline", action="store_true", help="Whether to use baseline model"
+    )
 
     # Training parameters
     parser.add_argument(
@@ -45,7 +53,7 @@ def arg_parse():
     )
 
     # others
-    parser.add_argument("--random_seed", type=int, default=0)
+    parser.add_argument("--random_seed", type=int, default=42)
 
     args = parser.parse_args()
 
