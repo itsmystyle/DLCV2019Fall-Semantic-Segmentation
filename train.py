@@ -10,8 +10,7 @@ import data
 import parser
 from metrics import MeanIOUScore
 from modules.trainer import Trainer
-from modules.baseline_model import BaselineNet
-from modules.unet_model import UNet
+from modules.utils import prepare_model
 
 
 if __name__ == "__main__":
@@ -47,8 +46,7 @@ if __name__ == "__main__":
     )
 
     """ load model """
-    print("===> prepare model ...")
-    model = UNet(args)
+    model = prepare_model(args)
     model.cuda()
 
     """ define loss """
