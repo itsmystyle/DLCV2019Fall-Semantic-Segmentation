@@ -45,8 +45,8 @@ def arg_parse():
         "--gpu", default=0, type=int, help="gpu device ids for CUDA_VISIBLE_DEVICES"
     )
     parser.add_argument("--epochs", default=100, type=int, help="num of validation iterations")
-    parser.add_argument("--train_batch", default=32, type=int, help="train batch size")
-    parser.add_argument("--test_batch", default=32, type=int, help="test batch size")
+    parser.add_argument("--train_batch", default=8, type=int, help="train batch size")
+    parser.add_argument("--test_batch", default=8, type=int, help="test batch size")
     parser.add_argument("--lr", default=2e-4, type=float, help="initial learning rate")
     parser.add_argument(
         "--weight-decay", default=1e-6, type=float, help="initial weight decay rate"
