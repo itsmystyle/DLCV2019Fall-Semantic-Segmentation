@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Metrics:
     def __init__(self):
         self.name = "Metric Name"
@@ -13,15 +16,14 @@ class Metrics:
 
 
 class MeanIOUScore(Metrics):
-    def __init__(self, num_classes):
+    def __init__(self, num_classes, window_size=100):
         self.name = "Mean IOU"
         self.num_classes = num_classes
-        self.n_correct = 0.0
-        self.n = 0
+        self.window_size = window_size
+        self.scores = []
 
     def reset(self):
-        self.n_correct = 0.0
-        self.n = 0
+        self.scores = []
 
     def update(self, predicts, targets):
         mean_iou = 0.0
@@ -33,11 +35,12 @@ class MeanIOUScore(Metrics):
             tp = (_preds * _tars).sum()
             iou = tp / (tp_fp + tp_fn - tp + 1e-20)
             mean_iou += iou / self.num_classes
-        self.n_correct += mean_iou
-        self.n += 1
+        self.scores.append(mean_iou)
+        ws = self.window_size
+        self.scores = self.scores[-ws:]
 
     def get_score(self):
-        return self.n_correct / (self.n + 1e-20)
+        return np.mean(self.scores)
 
     def print_score(self):
         score = self.get_score()
