@@ -112,5 +112,6 @@ If you have any problems related to HW2, you may
 
 ``` bash
   python test.py --resume <model_path/model.pth.tar> --data_dir <input_dir> --output_dir <output_dir>
+  python test.py --resume models/unet_da/model_best.pth.tar --data_dir hw2_data/val/img/ --output_dir models/unet_da/output_dir/
 ```
 
