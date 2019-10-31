@@ -29,22 +29,7 @@ def arg_parse():
 
     # Models parameters
     parser.add_argument("--save_dir", type=str, default="models", help="Where to store the model")
-    parser.add_argument(
-        "--pretrained",
-        dest="pretrained",
-        action="store_true",
-        help="Whether to use pretrained weight",
-    )
     parser.add_argument("--resume", type=str, default="", help="path to the trained model")
-    parser.add_argument(
-        "--baseline", dest="baseline", action="store_true", help="Whether to use baseline model"
-    )
-    parser.add_argument(
-        "--accumulate_gradient",
-        type=int,
-        default=1,
-        help="Accumulate how many steps of gradient before backpropagate",
-    )
 
     # Training parameters
     parser.add_argument(
@@ -56,6 +41,21 @@ def arg_parse():
     parser.add_argument("--lr", default=2e-4, type=float, help="initial learning rate")
     parser.add_argument(
         "--weight-decay", default=1e-6, type=float, help="initial weight decay rate"
+    )
+    parser.add_argument(
+        "--accumulate_gradient",
+        type=int,
+        default=1,
+        help="Accumulate how many steps of gradient before backpropagate",
+    )
+    parser.add_argument(
+        "--pretrained",
+        dest="pretrained",
+        action="store_true",
+        help="Whether to use pretrained weight",
+    )
+    parser.add_argument(
+        "--baseline", dest="baseline", action="store_true", help="Whether to use baseline model"
     )
 
     # others
