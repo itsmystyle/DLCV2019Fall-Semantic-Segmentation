@@ -61,8 +61,17 @@ if __name__ == "__main__":
     """ setup tensorboard """
     writer = SummaryWriter(os.path.join(args.save_dir, "train_info"))
 
+    """ setup trainer """
     trainer = Trainer(
-        model, optimizer, criterion, train_loader, val_loader, writer, metric, args.save_dir
+        model,
+        optimizer,
+        criterion,
+        args.accumulate_gradient,
+        train_loader,
+        val_loader,
+        writer,
+        metric,
+        args.save_dir,
     )
 
     trainer.fit(args.epochs)

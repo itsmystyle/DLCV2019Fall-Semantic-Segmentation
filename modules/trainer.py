@@ -10,11 +10,21 @@ from mean_iou_evaluate import mean_iou_score
 
 class Trainer:
     def __init__(
-        self, model, optimizer, criterion, train_loader, val_loader, writer, metric, save_dir
+        self,
+        model,
+        optimizer,
+        criterion,
+        accumulate_gradient,
+        train_loader,
+        val_loader,
+        writer,
+        metric,
+        save_dir,
     ):
         self.model = model
         self.optimizer = optimizer
         self.criterion = criterion
+        self.accumulate_gradient = accumulate_gradient
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.writer = writer
@@ -76,10 +86,11 @@ class Trainer:
 
             """ compute loss, backpropagation, update parameters """
             loss = self.criterion(preds, segs)
-
-            self.optimizer.zero_grad()
+            if idx % self.accumulate_gradient == 0:
+                self.optimizer.zero_grad()
             loss.backward()
-            self.optimizer.step()
+            if (idx + 1) % self.accumulate_gradient == 0:
+                self.optimizer.step()
 
             """ update metric """
             preds = F.softmax(preds, dim=1)
@@ -96,6 +107,10 @@ class Trainer:
             trange.set_postfix(
                 loss=batch_loss / (idx + 1), **{self.metric.name: self.metric.print_score()}
             )
+
+        if idx % 4 == 0:
+            self.optimizer.step()
+            self.optimizer.zero_grad()
 
         """ write out mean IoU to tensorboard """
         self.writer.add_scalar("mIoU/train_miou", self.metric.get_score(), epoch)
