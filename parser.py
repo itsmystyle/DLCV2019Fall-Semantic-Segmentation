@@ -39,6 +39,12 @@ def arg_parse():
     parser.add_argument(
         "--baseline", dest="baseline", action="store_true", help="Whether to use baseline model"
     )
+    parser.add_argument(
+        "--accumulate_gradient",
+        type=int,
+        default=1,
+        help="Accumulate how many steps of gradient before backpropagate",
+    )
 
     # Training parameters
     parser.add_argument(
