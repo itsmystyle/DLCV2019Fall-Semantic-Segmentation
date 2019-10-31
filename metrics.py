@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class Metrics:
     def __init__(self):
         self.name = "Metric Name"
