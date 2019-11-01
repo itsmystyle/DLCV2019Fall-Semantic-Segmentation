@@ -1,5 +1,5 @@
 from modules.baseline_model import BaselineNet
-from modules.unet_model import UNet
+from modules.improved_unet_model import ImprovedUNet
 
 
 def prepare_model(args):
@@ -8,6 +8,6 @@ def prepare_model(args):
         model = BaselineNet(args)
     else:
         print("===> prepare IMPROVEMENT model ...")
-        model = UNet(args)
+        model = ImprovedUNet(args)
 
     return model

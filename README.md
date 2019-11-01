@@ -106,12 +106,12 @@ If you have any problems related to HW2, you may
 
 ``` bash
   python train.py --data_dir hw2_data/ --save_dir models/baseline_with_da --pretrained --augmentation
+  python train.py --augmentation --pretrained --data_dir hw2_data/ --save_dir models/inet_da/ --accumulate_gradien 4
 ```
 
 ### How to test
 
 ``` bash
   python test.py --resume <model_path/model.pth.tar> --data_dir <input_dir> --output_dir <output_dir>
-  python train.py --augmentation --pretrained --data_dir hw2_data/ --save_dir models/inet_da/ --accumulate_gradien 4
 ```
 
