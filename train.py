@@ -10,7 +10,7 @@ import data
 import parser
 from metrics import MeanIOUScore
 from modules.trainer import Trainer
-from modules.baseline_model import BaselineNet
+from modules.utils import prepare_model
 
 
 if __name__ == "__main__":
@@ -20,9 +20,6 @@ if __name__ == "__main__":
     """ create directory to save trained model and other info """
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
-
-    """ setup GPU """
-    torch.cuda.set_device(args.gpu)
 
     """ setup random seed """
     random.seed(args.random_seed)
@@ -46,8 +43,7 @@ if __name__ == "__main__":
     )
 
     """ load model """
-    print("===> prepare model ...")
-    model = BaselineNet(args)
+    model = prepare_model(args)
     model.cuda()
 
     """ define loss """
@@ -62,8 +58,17 @@ if __name__ == "__main__":
     """ setup tensorboard """
     writer = SummaryWriter(os.path.join(args.save_dir, "train_info"))
 
+    """ setup trainer """
     trainer = Trainer(
-        model, optimizer, criterion, train_loader, val_loader, writer, metric, args.save_dir
+        model,
+        optimizer,
+        criterion,
+        args.accumulate_gradient,
+        train_loader,
+        val_loader,
+        writer,
+        metric,
+        args.save_dir,
     )
 
     trainer.fit(args.epochs)

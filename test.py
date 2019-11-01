@@ -8,7 +8,7 @@ from scipy.misc import toimage
 
 import data
 import parser
-from modules.baseline_model import BaselineNet
+from modules.utils import prepare_model
 
 
 if __name__ == "__main__":
@@ -26,9 +26,6 @@ if __name__ == "__main__":
             "Please provide which directory to save output, --output_dir <path_to_directory>"
         )
 
-    """ setup GPU """
-    torch.cuda.set_device(args.gpu)
-
     """ setup random seed """
     random.seed(args.random_seed)
     np.random.seed(args.random_seed)
@@ -44,10 +41,8 @@ if __name__ == "__main__":
         shuffle=False,
     )
 
-    """ TODO: use the save function to prepare model in train/test.py """
     """ load model """
-    print("===> prepare model ...")
-    model = BaselineNet(args)
+    model = prepare_model(args)
     model.cuda()
 
     """ resume save model """
