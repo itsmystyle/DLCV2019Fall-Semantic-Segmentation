@@ -26,9 +26,6 @@ if __name__ == "__main__":
             "Please provide which directory to save output, --output_dir <path_to_directory>"
         )
 
-    """ setup GPU """
-    torch.cuda.set_device(args.gpu)
-
     """ setup random seed """
     random.seed(args.random_seed)
     np.random.seed(args.random_seed)

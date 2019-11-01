@@ -21,9 +21,6 @@ if __name__ == "__main__":
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
 
-    """ setup GPU """
-    torch.cuda.set_device(args.gpu)
-
     """ setup random seed """
     random.seed(args.random_seed)
     np.random.seed(args.random_seed)

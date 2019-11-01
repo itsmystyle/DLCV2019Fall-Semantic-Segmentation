@@ -32,9 +32,6 @@ def arg_parse():
     parser.add_argument("--resume", type=str, default="", help="path to the trained model")
 
     # Training parameters
-    parser.add_argument(
-        "--gpu", default=0, type=int, help="gpu device ids for CUDA_VISIBLE_DEVICES"
-    )
     parser.add_argument("--epochs", default=100, type=int, help="num of validation iterations")
     parser.add_argument("--train_batch", default=8, type=int, help="train batch size")
     parser.add_argument("--test_batch", default=8, type=int, help="test batch size")
