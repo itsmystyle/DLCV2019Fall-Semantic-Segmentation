@@ -12,3 +12,7 @@ models
 
 # caches
 *__pycache__*
+
+# ipython notebook
+*.ipynb
+*.ipynb_checkpoints
