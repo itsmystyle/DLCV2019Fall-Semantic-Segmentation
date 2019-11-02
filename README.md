@@ -106,7 +106,8 @@ If you have any problems related to HW2, you may
 
 ``` bash
   python train.py --data_dir hw2_data/ --save_dir models/baseline_with_da --pretrained --augmentation
-  python train.py --augmentation --pretrained --data_dir hw2_data/ --save_dir models/inet_da/ --accumulate_gradient 4
+  python train.py --augmentation --pretrained --data_dir hw2_data/ --save_dir models/inet_da/ --accumulate_gradient 4 --lr 3e-5 --weight-decay 2e-6 --train_batch 8 --random_seed 42
+  python train.py --augmentation --pretrained --data_dir hw2_data/ --save_dir models/baseline_v2 --accumulate_gradient 1 --train_batch 32 --random_seed 0 --lr 3e-5 --weight-decay 1e-6 --baseline
 ```
 
 ### How to test
