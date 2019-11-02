@@ -46,7 +46,7 @@ class SegData(Dataset):
 
         """ set up image trainsform """
         self.transform = transforms.Compose(
-            [transforms.ToTensor()]  # [transforms.ToTensor(), transforms.Normalize(MEAN, STD)]
+            [transforms.ToTensor(), transforms.Normalize(MEAN, STD)]
         )
 
     def __len__(self):
