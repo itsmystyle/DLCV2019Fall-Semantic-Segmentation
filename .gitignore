@@ -8,7 +8,6 @@ hw2_data
 
 # model
 *.tar
-models
 
 # caches
 *__pycache__*
